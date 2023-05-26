@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: git-kaniko-pipeline
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: repository
+    - name: image
+  results:
+    - name: repository
+      value: $(tasks.git.results.repository)
+    - name: commit
+      value: $(tasks.git.results.commit)
+    - name: image
+      value: $(tasks.kaniko.results.image)
+    - name: digest
+      value: $(tasks.kaniko.results.digest)
+  tasks:
+    - name: git
+      workspaces:
+        - name: source
+      params:
+        - name: repository
+          value: $(params.repository)
+      taskRef:
+        name: git
+    - name: kaniko
+      runAfter:
+        - git
+      workspaces:
+        - name: source
+      params:
+        - name: image
+          value: $(params.image)
+      taskRef:
+        name: kaniko

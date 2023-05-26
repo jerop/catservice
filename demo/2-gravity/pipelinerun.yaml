@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: clone-build-push-pr-
+spec:
+  serviceAccountName: jerop-ksa
+  workspaces:
+    - name: source
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+  params:
+    - name: repository
+      value: https://github.com/jerop/catservice.git
+    - name: image
+      value: us-docker.pkg.dev/jerop-tekton-tests/gcr.io/cat
+  pipelineRef:
+    name: git-kaniko-pipeline
+  podTemplate:
+    securityContext:
+      fsGroup: 65532

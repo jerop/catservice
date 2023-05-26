@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: clone-build-push-tr-
+spec:
+  serviceAccountName: jerop-ksa
+  workspaces:
+    - name: source
+      emptyDir: {}
+  params:
+    - name: repository
+      value: https://github.com/jerop/catservice.git
+    - name: image
+      value: us-docker.pkg.dev/jerop-tekton-tests/gcr.io/meow
+  taskRef:
+    name: git-kaniko-task
+  podTemplate:
+    securityContext:
+      fsGroup: 65532

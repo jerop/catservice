@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-kaniko-task
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: repository
+    - name: image
+  results:
+    - name: repository
+    - name: commit
+    - name: image
+    - name: digest
+  steps:
+    - name: git
+      uses:
+        taskRef:
+          name: git
+    - name: kaniko
+      uses:
+        taskRef:
+          name: kaniko

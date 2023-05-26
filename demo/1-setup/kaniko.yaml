@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kaniko
+spec:
+  params:
+    - name: image
+  workspaces:
+    - name: source
+  results:
+    - name: image
+    - name: digest
+  steps:
+    - name: build
+      workingDir: $(workspaces.source.path)
+      image: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+      args:
+        - --dockerfile=./Dockerfile
+        - --context=$(workspaces.source.path)/./
+        - --destination=$(params.image)
+        - --digest-file=$(results.digest.path)
+      securitycontext:
+        runAsUser: 0
+    - name: push
+      image: docker.io/library/bash:5.1.4@sha256:c523c636b722339f41b6a431b44588ab2f762c5de5ec3bd7964420ff982fb1d9
+      script: |
+        set -e
+        image="$(params.image)"
+        echo -n "${image}" | tee "$(results.image.path)"
