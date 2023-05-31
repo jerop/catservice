@@ -8,15 +8,6 @@ spec:
   params:
     - name: repository
     - name: image
-  results:
-    - name: repository
-      value: $(tasks.git.results.repository)
-    - name: commit
-      value: $(tasks.git.results.commit)
-    - name: image
-      value: $(tasks.kaniko.results.image)
-    - name: digest
-      value: $(tasks.kaniko.results.digest)
   tasks:
     - name: git
       workspaces:

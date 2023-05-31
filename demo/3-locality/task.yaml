@@ -8,11 +8,6 @@ spec:
   params:
     - name: repository
     - name: image
-  results:
-    - name: repository
-    - name: commit
-    - name: image
-    - name: digest
   steps:
     - name: git
       uses:

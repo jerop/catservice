@@ -36,7 +36,7 @@ kubectl apply -f demo/2-gravity/pipeline.yaml
 ```
 
 Create `PipelineRun`:
-
+:
 ```shell
 kubectl create -f demo/2-gravity/pipelinerun.yaml
 ```
@@ -44,15 +44,20 @@ kubectl create -f demo/2-gravity/pipelinerun.yaml
 Observe `PipelineRun` execution logs:
 
 ```shell
-tkn pr logs <pipelinerun-name> -f
+tkn pr logs -L -f
 ```
 
 Inspect `PipelineRun` status:
 
 ```shell
-tkn pr describe <pipelinerun-name>
+tkn pr describe -L
 ```
 
+Get `Pods`:
+
+```shell
+kubectl get pods
+```
 ## 3: Data Locality
 
 View specifications:
@@ -75,11 +80,11 @@ kubectl create -f demo/3-locality/taskrun.yaml
 Observe `TaskRun` execution logs:
 
 ```shell
-tkn tr logs <taskrun-name> -f
+tkn tr logs -L -f
 ```
 
 Inspect `TaskRun` status:
 
 ```shell
-tkn tr describe <taskrun-name>
+tkn tr describe -L
 ```
